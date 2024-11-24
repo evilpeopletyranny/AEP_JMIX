@@ -1,6 +1,6 @@
 package ru.ase.view.user;
 
-import ru.ase.entity.User;
+import ru.ase.entity.user.User;
 import ru.ase.view.main.MainView;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;

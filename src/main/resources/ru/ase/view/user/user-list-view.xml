@@ -4,7 +4,7 @@
       focusComponent="usersDataGrid">
     <data>
         <collection id="usersDc"
-                    class="ru.ase.entity.User">
+                    class="ru.ase.entity.user.User">
             <fetchPlan extends="_base"/>
             <loader id="usersDl" readOnly="true">
                 <query>

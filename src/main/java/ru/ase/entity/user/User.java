@@ -1,4 +1,4 @@
-package ru.ase.entity;
+package ru.ase.entity.user;
 
 import io.jmix.core.HasTimeZone;
 import io.jmix.core.annotation.Secret;

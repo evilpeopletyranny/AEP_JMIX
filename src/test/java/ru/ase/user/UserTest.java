@@ -1,6 +1,6 @@
 package ru.ase.user;
 
-import ru.ase.entity.User;
+import ru.ase.entity.user.User;
 import ru.ase.test_support.AuthenticatedAsAdmin;
 import io.jmix.core.DataManager;
 import io.jmix.core.security.UserRepository;

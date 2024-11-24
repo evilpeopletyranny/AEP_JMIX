@@ -1,6 +1,6 @@
 package ru.ase.security;
 
-import ru.ase.entity.User;
+import ru.ase.entity.user.User;
 import io.jmix.securitydata.user.AbstractDatabaseUserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
