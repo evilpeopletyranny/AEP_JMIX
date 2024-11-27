@@ -13,6 +13,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import ru.ase.entity.DesignCondition;
+import ru.ase.entity.event.InitialEvent;
 import ru.ase.entity.structure.PBSCode;
 import ru.ase.entity.structure.unit.Building;
 import ru.ase.entity.structure.unit.System;
@@ -33,6 +35,22 @@ public class Tag {
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
+
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinTable(name = "TAG_DESIGN_CONDITION_LINK",
+            joinColumns = @JoinColumn(name = "TAG_ID"),
+            inverseJoinColumns = @JoinColumn(name = "DESIGN_CONDITION_ID"))
+    @ManyToMany
+    private Set<DesignCondition> designConditions;
+
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinTable(name = "TAG_INITIAL_EVENT_LINK",
+            joinColumns = @JoinColumn(name = "TAG_ID"),
+            inverseJoinColumns = @JoinColumn(name = "INITIAL_EVENT_ID"))
+    @ManyToMany
+    private Set<InitialEvent> initialEvents;
 
     @Comment("Project position kks code.")
     @Column(name = "KKS_CODE", nullable = false)
@@ -89,6 +107,22 @@ public class Tag {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
+
+    public Set<InitialEvent> getInitialEvents() {
+        return initialEvents;
+    }
+
+    public void setInitialEvents(Set<InitialEvent> initialEvents) {
+        this.initialEvents = initialEvents;
+    }
+
+    public Set<DesignCondition> getDesignConditions() {
+        return designConditions;
+    }
+
+    public void setDesignConditions(Set<DesignCondition> designConditions) {
+        this.designConditions = designConditions;
+    }
 
     public Set<TagAttribute> getAttributes() {
         return attributes;

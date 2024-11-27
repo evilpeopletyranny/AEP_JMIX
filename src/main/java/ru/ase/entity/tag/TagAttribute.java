@@ -30,6 +30,12 @@ public class TagAttribute {
     @NotNull
     private String attribute;
 
+    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @OnDelete(DeletePolicy.DENY)
+    @JoinColumn(name = "TAG_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Tag tag;
+
     @DeletedBy
     @Column(name = "DELETED_BY")
     private String deletedBy;
@@ -45,12 +51,6 @@ public class TagAttribute {
     @CreatedDate
     @Column(name = "CREATED_DATE")
     private OffsetDateTime createdDate;
-
-    @OnDeleteInverse(DeletePolicy.CASCADE)
-    @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "TAG_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Tag tag;
 
     public Tag getTag() {
         return tag;
