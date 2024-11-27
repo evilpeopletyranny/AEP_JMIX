@@ -34,7 +34,7 @@ public class TagAttributeValue {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Tag tag;
 
-    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDeleteInverse(DeletePolicy.CASCADE)
     @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "ATTRIBUTE_ID", nullable = false)
     @NotNull

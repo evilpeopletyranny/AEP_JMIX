@@ -18,6 +18,7 @@ import ru.ase.entity.structure.unit.Building;
 import ru.ase.entity.structure.unit.System;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @JmixEntity
@@ -64,6 +65,11 @@ public class Tag {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private PBSCode pbsCode;
 
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "tag")
+    private Set<TagAttribute> attributes;
+
     @Column(name = "REVISION", nullable = false)
     @NotNull
     private String revision;
@@ -83,6 +89,15 @@ public class Tag {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
+
+    public Set<TagAttribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Set<TagAttribute> attributes) {
+        this.attributes = attributes;
+    }
+
 
     public String getRevision() {
         return revision;

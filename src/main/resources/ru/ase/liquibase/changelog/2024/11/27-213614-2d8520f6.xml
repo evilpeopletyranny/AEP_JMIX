@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="AEP_JMIX">
+        <addColumn tableName="TAG_ATTRIBUTE">
+            <column name="TAG_ID" type="UUID"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="TAG_ID" tableName="TAG_ATTRIBUTE"/>
+    </changeSet>
+    <changeSet id="2" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_ATTRIBUTE_TAG" tableName="TAG_ATTRIBUTE">
+            <column name="TAG_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="TAG_ID" baseTableName="TAG_ATTRIBUTE"
+                                 constraintName="FK_TAG_ATTRIBUTE_ON_TAG" referencedColumnNames="ID"
+                                 referencedTableName="TAG"/>
+    </changeSet>
+</databaseChangeLog>

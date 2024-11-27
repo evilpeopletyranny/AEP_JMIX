@@ -43,11 +43,18 @@ dependencies {
     testImplementation 'io.jmix.flowui:jmix-flowui-test-assist'
     implementation 'org.postgresql:postgresql'
     implementation 'io.jmix.translations:jmix-translations-ru'
+
 }
 
 configurations.implementation {
     exclude group: 'com.vaadin', module: 'hilla'
     exclude group: 'com.vaadin', module: 'hilla-dev'
+}
+
+configurations {
+    configureEach {
+        exclude group: 'xerces', module: 'xercesImpl'
+    }
 }
 
 test {
