@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "INITIAL_EVENT", indexes = {
-        @Index(name = "IDX_INITIAL_EVENT_INITIALEVENT_GROUP", columnList = "INITIALEVENT_GROUP_ID")
+        @Index(name = "IDX_INITIAL_EVENT_INITIAL_EVENT_GROUP", columnList = "INITIAL_EVENT_GROUP_ID")
 })
 @Entity
 public class InitialEvent {
@@ -41,7 +41,7 @@ public class InitialEvent {
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.DENY)
-    @JoinColumn(name = "INITIALEVENT_GROUP_ID", nullable = false)
+    @JoinColumn(name = "INITIAL_EVENT_GROUP_ID", nullable = false)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private InitialEventGroup initialEventGroup;

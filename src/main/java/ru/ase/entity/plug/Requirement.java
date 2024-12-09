@@ -1,50 +1,27 @@
-package ru.ase.entity.structure.unit;
+package ru.ase.entity.plug;
 
-import io.jmix.core.DeletePolicy;
 import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.entity.annotation.OnDelete;
-import io.jmix.core.entity.annotation.OnDeleteInverse;
-import io.jmix.core.metamodel.annotation.Comment;
-import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import ru.ase.entity.structure.PBSCode;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Comment("General description of the structure unit.")
 @JmixEntity
-@MappedSuperclass
-public abstract class StructuralUnit {
+@Table(name = "REQUIREMENT")
+@Entity
+public class Requirement {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
-
-    @Comment("KKS code of this structural unit.")
-    @Column(name = "KKS_CODE", nullable = false)
-    @NotNull
-    private String kksCode;
-
-    @Comment("PBS code of this structural unit.")
-    @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "PBS_CODE_ID", nullable = false)
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private PBSCode pbsCode;
-
-    @InstanceName
-    @Comment("Description of this structural unit.")
-    @Column(name = "DESCRIPTION")
-    @Lob
-    private String description;
 
     @CreatedBy
     @Column(name = "CREATED_BY")
@@ -61,30 +38,6 @@ public abstract class StructuralUnit {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public PBSCode getPbsCode() {
-        return pbsCode;
-    }
-
-    public void setPbsCode(PBSCode pbsCode) {
-        this.pbsCode = pbsCode;
-    }
-
-    public String getKksCode() {
-        return kksCode;
-    }
-
-    public void setKksCode(String kksCode) {
-        this.kksCode = kksCode;
-    }
 
     public OffsetDateTime getDeletedDate() {
         return deletedDate;

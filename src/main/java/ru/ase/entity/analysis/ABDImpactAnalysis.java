@@ -71,6 +71,9 @@ public class ABDImpactAnalysis {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Approximation implementationObject;
 
+    @Column(name = "NON_IMPLEMETATION_JUSTIFICATION")
+    private String nonImplementationJustification;
+
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "STATUS_ID", nullable = false)
@@ -107,6 +110,14 @@ public class ABDImpactAnalysis {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
+
+    public String getNonImplementationJustification() {
+        return nonImplementationJustification;
+    }
+
+    public void setNonImplementationJustification(String nonImplementationJustification) {
+        this.nonImplementationJustification = nonImplementationJustification;
+    }
 
     public Criticality getCriticality() {
         return criticality;

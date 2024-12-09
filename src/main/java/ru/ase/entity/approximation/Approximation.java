@@ -32,6 +32,9 @@ public class Approximation {
     @Id
     private UUID id;
 
+    @Column(name = "CODE")
+    private String code;
+
     @Column(name = "JUSTIFICATION", nullable = false)
     @Lob
     @NotNull
@@ -84,6 +87,14 @@ public class Approximation {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getRevision() {
         return revision;

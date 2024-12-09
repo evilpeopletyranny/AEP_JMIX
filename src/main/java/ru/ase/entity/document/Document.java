@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import ru.ase.entity.event.InitialEvent;
+import ru.ase.entity.plug.Requirement;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -20,7 +21,8 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "DOCUMENT", indexes = {
-        @Index(name = "IDX_DOCUMENT_DOCUMENT_TYPE", columnList = "DOCUMENT_TYPE_ID")
+        @Index(name = "IDX_DOCUMENT_DOCUMENT_TYPE", columnList = "DOCUMENT_TYPE_ID"),
+        @Index(name = "IDX_DOCUMENT_REQUIREMENTS", columnList = "REQUIREMENTS_ID")
 })
 @Entity
 public class Document {
@@ -53,10 +55,17 @@ public class Document {
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.DENY)
     @JoinTable(name = "DOCUMENT_INITIAL_EVENT_LINK",
-            joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "INITIAL_EVENT_ID"))
+            joinColumns = @JoinColumn(name = "DOCUMENT_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "INITIAL_EVENT_ID", referencedColumnName = "ID"))
     @ManyToMany
     private Set<InitialEvent> initialEvents;
+
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinColumn(name = "REQUIREMENTS_ID", nullable = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Requirement requirements;
 
     @CreatedDate
     @Column(name = "CREATED_DATE")
@@ -69,6 +78,14 @@ public class Document {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
+
+    public Requirement getRequirements() {
+        return requirements;
+    }
+
+    public void setRequirements(Requirement requirements) {
+        this.requirements = requirements;
+    }
 
     public Set<InitialEvent> getInitialEvents() {
         return initialEvents;
