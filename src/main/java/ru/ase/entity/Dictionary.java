@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @JmixEntity
 @MappedSuperclass
-public class Dictionary {
+abstract public class Dictionary {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id

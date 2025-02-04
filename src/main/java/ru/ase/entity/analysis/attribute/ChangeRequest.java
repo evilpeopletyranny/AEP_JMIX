@@ -1,19 +1,25 @@
-package ru.ase.entity.analysis;
+package ru.ase.entity.analysis.attribute;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDelete;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import ru.ase.entity.analysis.ImpactAnalysis;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @JmixEntity
-@Table(name = "CHANGE_REQUEST")
+@Table(name = "CHANGE_REQUEST", indexes = {
+        @Index(name = "IDX_CHANGE_REQUEST_IMPACT_ANALYSIS", columnList = "IMPACT_ANALYSIS_ID")
+})
 @Entity
 public class ChangeRequest {
     @JmixGeneratedValue
@@ -41,6 +47,20 @@ public class ChangeRequest {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
+
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.DENY)
+    @JoinColumn(name = "IMPACT_ANALYSIS_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private ImpactAnalysis impactAnalysis;
+
+    public ImpactAnalysis getImpactAnalysis() {
+        return impactAnalysis;
+    }
+
+    public void setImpactAnalysis(ImpactAnalysis impactAnalysis) {
+        this.impactAnalysis = impactAnalysis;
+    }
 
     public String getText() {
         return text;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="AEP_JMIX">
+        <dropForeignKeyConstraint baseTableName="document" constraintName="fk_document_on_document_type"/>
+    </changeSet>
+    <changeSet id="2" author="AEP_JMIX">
+        <addColumn tableName="CHANGE_REQUEST">
+            <column name="IMPACT_ANALYSIS_ID" type="UUID"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="IMPACT_ANALYSIS_ID" tableName="CHANGE_REQUEST"/>
+    </changeSet>
+    <changeSet id="3" author="AEP_JMIX">
+        <createIndex indexName="IDX_CHANGE_REQUEST_IMPACT_ANALYSIS" tableName="CHANGE_REQUEST">
+            <column name="IMPACT_ANALYSIS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="IMPACT_ANALYSIS_ID" baseTableName="CHANGE_REQUEST"
+                                 constraintName="FK_CHANGE_REQUEST_ON_IMPACT_ANALYSIS" referencedColumnNames="ID"
+                                 referencedTableName="IMPACT_ANALYSIS"/>
+    </changeSet>
+    <changeSet id="4" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="DOCUMENT_TYPE_ID" baseTableName="DOCUMENT"
+                                 constraintName="FK_DOCUMENT_ON_DOCUMENT_TYPE" referencedColumnNames="ID"
+                                 referencedTableName="DOCUMENT_TYPE"/>
+    </changeSet>
+    <changeSet id="5" author="AEP_JMIX">
+        <dropColumn columnName="tag_id" tableName="tag_attribute"/>
+    </changeSet>
+    <changeSet id="6" author="AEP_JMIX">
+        <addNotNullConstraint columnDataType="UUID" columnName="BUILDING_ID" tableName="TAG" validate="true"/>
+    </changeSet>
+    <changeSet id="7" author="AEP_JMIX">
+        <dropNotNullConstraint columnDataType="uuid" columnName="CHANGE_REQUEST_ID" tableName="IMPACT_ANALYSIS"/>
+    </changeSet>
+</databaseChangeLog>

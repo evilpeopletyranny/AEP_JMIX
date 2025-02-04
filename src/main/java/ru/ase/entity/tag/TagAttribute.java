@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "TAG_ATTRIBUTE", indexes = {
-        @Index(name = "IDX_TAG_ATTRIBUTE_TAG", columnList = "TAG_ID")
+        @Index(name = "IDX_TAG_ATTRIBUTE_TAG_GROUP", columnList = "TAG_GROUP_ID")
 })
 @Entity
 public class TagAttribute {
@@ -26,15 +26,16 @@ public class TagAttribute {
     @Id
     private UUID id;
 
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinColumn(name = "TAG_GROUP_ID", nullable = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private TagAttribute tagGroup;
+
     @Column(name = "ATTRIBUTE", nullable = false)
     @NotNull
     private String attribute;
-
-    @OnDeleteInverse(DeletePolicy.CASCADE)
-    @OnDelete(DeletePolicy.DENY)
-    @JoinColumn(name = "TAG_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Tag tag;
 
     @DeletedBy
     @Column(name = "DELETED_BY")
@@ -52,12 +53,12 @@ public class TagAttribute {
     @Column(name = "CREATED_DATE")
     private OffsetDateTime createdDate;
 
-    public Tag getTag() {
-        return tag;
+    public TagAttribute getTagGroup() {
+        return tagGroup;
     }
 
-    public void setTag(Tag tag) {
-        this.tag = tag;
+    public void setTagGroup(TagAttribute tagGroup) {
+        this.tagGroup = tagGroup;
     }
 
     public String getAttribute() {

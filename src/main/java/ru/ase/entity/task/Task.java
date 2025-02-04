@@ -12,21 +12,19 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import ru.ase.entity.Report;
-import ru.ase.entity.analysis.Stage;
+import ru.ase.entity.analysis.attribute.Stage;
 import ru.ase.entity.approximation.Approximation;
 import ru.ase.entity.document.Document;
 import ru.ase.entity.event.InitialEvent;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @JmixEntity
 @Table(name = "TASK", indexes = {
         @Index(name = "IDX_TASK_STAGE", columnList = "STAGE_ID"),
-        @Index(name = "IDX_TASK_INITIAL_EVENT", columnList = "INITIAL_EVENT_ID"),
-        @Index(name = "IDX_TASK_APPROXIMATIONS", columnList = "")
+        @Index(name = "IDX_TASK_INITIAL_EVENT", columnList = "INITIAL_EVENT_ID")
 })
 @Entity(name = "Task_")
 public class Task {
@@ -61,16 +59,16 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private InitialEvent initialEvent;
 
-    @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.DENY)
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
     @JoinTable(name = "TASK_DOCUMENT_LINK",
             joinColumns = @JoinColumn(name = "TASK_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "DOCUMENT_ID", referencedColumnName = "ID"))
     @ManyToMany
     private Set<Document> documents;
 
-    @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.DENY)
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
     @JoinTable(name = "TASK_REPORT_LINK",
             joinColumns = @JoinColumn(name = "TASK_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "REPORT_ID", referencedColumnName = "ID"))
@@ -78,12 +76,12 @@ public class Task {
     private Set<Report> reports;
 
     @JoinTable(name = "TASK_APPROXIMATION_LINK",
-            joinColumns = @JoinColumn(name = "TASK_ID"),
-            inverseJoinColumns = @JoinColumn(name = "APPROXIMATION_ID"))
+            joinColumns = @JoinColumn(name = "TASK_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "APPROXIMATION_ID", referencedColumnName = "ID"))
     @ManyToMany
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
-    private List<Approximation> approximations;
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.UNLINK)
+    private Set<Approximation> approximations;
 
     @CreatedBy
     @Column(name = "CREATED_BY")
@@ -101,11 +99,11 @@ public class Task {
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
 
-    public void setApproximations(List<Approximation> approximations) {
+    public void setApproximations(Set<Approximation> approximations) {
         this.approximations = approximations;
     }
 
-    public List<Approximation> getApproximations() {
+    public Set<Approximation> getApproximations() {
         return approximations;
     }
 

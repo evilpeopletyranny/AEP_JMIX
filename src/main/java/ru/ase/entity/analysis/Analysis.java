@@ -1,4 +1,4 @@
-package ru.ase.entity;
+package ru.ase.entity.analysis;
 
 import io.jmix.core.DeletePolicy;
 import io.jmix.core.annotation.DeletedBy;
@@ -14,27 +14,22 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import ru.ase.entity.analysis.attribute.Stage;
 import ru.ase.entity.analysis.attribute.Status;
-import ru.ase.entity.plug.File;
+import ru.ase.entity.approximation.Approximation;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @JmixEntity
-@Table(name = "REPORT", indexes = {
-        @Index(name = "IDX_REPORT_FILE", columnList = "FILE_ID"),
-        @Index(name = "IDX_REPORT_NEXT_REPORT", columnList = "NEXT_REPORT_ID"),
-        @Index(name = "IDX_REPORT_PREV_REPORT", columnList = "PREV_REPORT_ID"),
-        @Index(name = "IDX_REPORT_STATUS", columnList = "STATUS_ID")
-})
-@Entity
-public class Report {
+@MappedSuperclass
+abstract public class Analysis {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
 
-    @Column(name = "CODE", nullable = false)
+    @Column(name = "CODE", nullable = false, length = 20)
     @NotNull
     private String code;
 
@@ -43,23 +38,26 @@ public class Report {
     @Lob
     private String description;
 
-    @Column(name = "AUTHOR", nullable = false)
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinColumn(name = "CHANGE_CONFIGURATION_BASELINE_ID", nullable = false)
     @NotNull
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Stage changeConfigurationBaseline;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "NEXT_REPORT_ID", nullable = false)
+    @JoinColumn(name = "IMPLEMENTATION_CONFIGURATION_BASELINE_ID", nullable = false)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Report nextReport;
+    private Stage implementationConfigurationBaseline;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "PREV_REPORT_ID", nullable = false)
+    @JoinColumn(name = "IMPLEMENTATION_OBJECT_ID", nullable = false)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Report prevReport;
+    private Approximation implementationObject;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
@@ -67,10 +65,6 @@ public class Report {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Status status;
-
-    @Column(name = "REVISION", nullable = false)
-    @NotNull
-    private String revision;
 
     @CreatedBy
     @Column(name = "CREATED_BY")
@@ -80,14 +74,6 @@ public class Report {
     @Column(name = "CREATED_DATE")
     private OffsetDateTime createdDate;
 
-    @DeletedBy
-    @Column(name = "DELETED_BY")
-    private String deletedBy;
-
-    @DeletedDate
-    @Column(name = "DELETED_DATE")
-    private OffsetDateTime deletedDate;
-
     @LastModifiedBy
     @Column(name = "LAST_MODIFIED_BY")
     private String lastModifiedBy;
@@ -96,20 +82,13 @@ public class Report {
     @Column(name = "LAST_MODIFIED_DATE")
     private OffsetDateTime lastModifiedDate;
 
-    @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "FILE_ID", nullable = false)
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private File file;
+    @DeletedBy
+    @Column(name = "DELETED_BY")
+    private String deletedBy;
 
-    public String getRevision() {
-        return revision;
-    }
-
-    public void setRevision(String revision) {
-        this.revision = revision;
-    }
+    @DeletedDate
+    @Column(name = "DELETED_DATE")
+    private OffsetDateTime deletedDate;
 
     public Status getStatus() {
         return status;
@@ -119,52 +98,28 @@ public class Report {
         this.status = status;
     }
 
-    public Report getPrevReport() {
-        return prevReport;
+    public Approximation getImplementationObject() {
+        return implementationObject;
     }
 
-    public void setPrevReport(Report prevReport) {
-        this.prevReport = prevReport;
+    public void setImplementationObject(Approximation implementationObject) {
+        this.implementationObject = implementationObject;
     }
 
-    public Report getNextReport() {
-        return nextReport;
+    public Stage getImplementationConfigurationBaseline() {
+        return implementationConfigurationBaseline;
     }
 
-    public void setNextReport(Report nextReport) {
-        this.nextReport = nextReport;
+    public void setImplementationConfigurationBaseline(Stage implementationConfigurationBaseline) {
+        this.implementationConfigurationBaseline = implementationConfigurationBaseline;
     }
 
-    public File getFile() {
-        return file;
+    public Stage getChangeConfigurationBaseline() {
+        return changeConfigurationBaseline;
     }
 
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public OffsetDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(OffsetDateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setChangeConfigurationBaseline(Stage changeConfigurationBaseline) {
+        this.changeConfigurationBaseline = changeConfigurationBaseline;
     }
 
     public String getDescription() {
@@ -197,6 +152,22 @@ public class Report {
 
     public void setDeletedBy(String deletedBy) {
         this.deletedBy = deletedBy;
+    }
+
+    public OffsetDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(OffsetDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     public OffsetDateTime getCreatedDate() {

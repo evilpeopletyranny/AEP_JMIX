@@ -7,6 +7,7 @@ import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDelete;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Comment;
+import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
@@ -19,15 +20,19 @@ import ru.ase.entity.structure.PBSCode;
 import ru.ase.entity.structure.unit.Building;
 import ru.ase.entity.structure.unit.System;
 
+import javax.xml.bind.annotation.*;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+@XmlRootElement(name = "tag")
+@XmlAccessorType(XmlAccessType.FIELD)
 @JmixEntity
 @Table(name = "TAG", indexes = {
         @Index(name = "IDX_TAG_BUILDING", columnList = "BUILDING_ID"),
         @Index(name = "IDX_TAG_SYSTEM", columnList = "SYSTEM_ID"),
-        @Index(name = "IDX_TAG_PBS_CODE", columnList = "PBS_CODE_ID")
+        @Index(name = "IDX_TAG_PBS_CODE", columnList = "PBS_CODE_ID"),
+        @Index(name = "IDX_TAG_TAG_TYPE", columnList = "TAG_TYPE_ID")
 })
 @Entity
 public class Tag {
@@ -36,26 +41,38 @@ public class Tag {
     @Id
     private UUID id;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @XmlElement(name = "tagType")
+    @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
-    @JoinTable(name = "TAG_DESIGN_CONDITION_LINK",
-            joinColumns = @JoinColumn(name = "TAG_ID"),
-            inverseJoinColumns = @JoinColumn(name = "DESIGN_CONDITION_ID"))
-    @ManyToMany
-    private Set<DesignCondition> designConditions;
-
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.UNLINK)
-    @JoinTable(name = "TAG_INITIAL_EVENT_LINK",
-            joinColumns = @JoinColumn(name = "TAG_ID"),
-            inverseJoinColumns = @JoinColumn(name = "INITIAL_EVENT_ID"))
-    @ManyToMany
-    private Set<InitialEvent> initialEvents;
+    @JoinColumn(name = "TAG_TYPE_ID", nullable = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private TagType tagType;
 
     @Comment("Project position kks code.")
     @Column(name = "KKS_CODE", nullable = false)
     @NotNull
     private String kksCode;
+
+    @XmlElementWrapper(name = "designConditions")
+    @XmlElement(name = "designCondition")
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinTable(name = "TAG_DESIGN_CONDITION_LINK",
+            joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "DESIGN_CONDITION_ID", referencedColumnName = "ID"))
+    @ManyToMany
+    private Set<DesignCondition> designConditions;
+
+    @XmlElementWrapper(name = "initialEvents")
+    @XmlElement(name = "initialEvent")
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinTable(name = "TAG_INITIAL_EVENT_LINK",
+            joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "INITIAL_EVENT_ID", referencedColumnName = "ID"))
+    @ManyToMany
+    private Set<InitialEvent> initialEvents;
 
     @InstanceName
     @Comment("Description of the project position.")
@@ -63,10 +80,11 @@ public class Tag {
     @Lob
     private String description;
 
+    @NotNull
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "BUILDING_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BUILDING_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Building building;
 
     @OnDeleteInverse(DeletePolicy.DENY)
@@ -83,10 +101,11 @@ public class Tag {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private PBSCode pbsCode;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @Composition
+    @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "tag")
-    private Set<TagAttribute> attributes;
+    private Set<TagAttributeValue> attributes;
 
     @Column(name = "REVISION", nullable = false)
     @NotNull
@@ -108,6 +127,22 @@ public class Tag {
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
 
+    public TagType getTagType() {
+        return tagType;
+    }
+
+    public void setTagType(TagType tagType) {
+        this.tagType = tagType;
+    }
+
+    public void setAttributes(Set<TagAttributeValue> attributes) {
+        this.attributes = attributes;
+    }
+
+    public Set<TagAttributeValue> getAttributes() {
+        return attributes;
+    }
+
     public Set<InitialEvent> getInitialEvents() {
         return initialEvents;
     }
@@ -122,14 +157,6 @@ public class Tag {
 
     public void setDesignConditions(Set<DesignCondition> designConditions) {
         this.designConditions = designConditions;
-    }
-
-    public Set<TagAttribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Set<TagAttribute> attributes) {
-        this.attributes = attributes;
     }
 
 

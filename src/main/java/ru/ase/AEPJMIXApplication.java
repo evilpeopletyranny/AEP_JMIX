@@ -16,8 +16,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
+import ru.ase.entity.tag.Tag;
+import ru.ase.xml.SchemaGenerator;
 
 import javax.sql.DataSource;
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 
 @Push
 @Theme(value = "AEP_JMIX")

@@ -39,8 +39,8 @@ public class InitialEvent {
     @Lob
     private String description;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "INITIAL_EVENT_GROUP_ID", nullable = false)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

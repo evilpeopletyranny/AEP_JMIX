@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="AEP_JMIX">
+        <createTable tableName="TAG_TYPE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_TYPE"/>
+            </column>
+            <column name="NAME" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="AEP_JMIX">
+        <createTable tableName="TAG_TYPE_TAG_GROUP_LINK">
+            <column name="TAG_GROUP_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_TYPE_TAG_GROUP_LINK"/>
+            </column>
+            <column name="TAG_TYPE_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_TYPE_TAG_GROUP_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="AEP_JMIX">
+        <addColumn tableName="TAG">
+            <column name="TAG_TYPE_ID" type="UUID"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="TAG_TYPE_ID" tableName="TAG"/>
+    </changeSet>
+    <changeSet id="4" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_TAG_TYPE" tableName="TAG">
+            <column name="TAG_TYPE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="TAG_TYPE_ID" baseTableName="TAG" constraintName="FK_TAG_ON_TAG_TYPE"
+                                 referencedColumnNames="ID" referencedTableName="TAG_TYPE"/>
+    </changeSet>
+    <changeSet id="5" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="TAG_GROUP_ID" baseTableName="TAG_TYPE_TAG_GROUP_LINK"
+                                 constraintName="FK_TAGTYPTAGGRO_ON_TAG_GROUP" referencedColumnNames="ID"
+                                 referencedTableName="TAG_GROUP"/>
+    </changeSet>
+    <changeSet id="6" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="TAG_TYPE_ID" baseTableName="TAG_TYPE_TAG_GROUP_LINK"
+                                 constraintName="FK_TAGTYPTAGGRO_ON_TAG_TYPE" referencedColumnNames="ID"
+                                 referencedTableName="TAG_TYPE"/>
+    </changeSet>
+</databaseChangeLog>

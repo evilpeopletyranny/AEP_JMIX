@@ -45,12 +45,12 @@ public class Document {
     @NotNull
     private String revision;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
-    @JoinColumn(name = "DOCUMENT_TYPE_ID", nullable = false)
     @NotNull
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.UNLINK)
+    @JoinColumn(name = "DOCUMENT_TYPE_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Document documentType;
+    private DocumentType documentType;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.DENY)
@@ -79,6 +79,14 @@ public class Document {
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
 
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
     public Requirement getRequirements() {
         return requirements;
     }
@@ -93,14 +101,6 @@ public class Document {
 
     public void setInitialEvents(Set<InitialEvent> initialEvents) {
         this.initialEvents = initialEvents;
-    }
-
-    public Document getDocumentType() {
-        return documentType;
-    }
-
-    public void setDocumentType(Document documentType) {
-        this.documentType = documentType;
     }
 
     public String getRevision() {
