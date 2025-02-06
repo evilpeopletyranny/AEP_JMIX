@@ -5,6 +5,9 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 @Comment("Description of the structure block - system.")
 @JmixEntity
 @Table(name = "SYSTEM_")

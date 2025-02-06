@@ -12,9 +12,11 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@XmlRootElement
 @JmixEntity
 @Table(name = "TAG_ATTRIBUTE_VALUE", indexes = {
         @Index(name = "IDX_TAG_ATTRIBUTE_VALUE_TAG", columnList = "TAG_ID"),

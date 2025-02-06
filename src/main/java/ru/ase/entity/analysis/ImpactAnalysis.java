@@ -10,6 +10,9 @@ import jakarta.validation.constraints.NotNull;
 import ru.ase.entity.analysis.attribute.ChangeRequest;
 import ru.ase.entity.document.Document;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 @JmixEntity
 @Table(name = "IMPACT_ANALYSIS", indexes = {
         @Index(name = "IDX_IMPACT_ANALYSIS_CHANGE_REQUEST", columnList = "CHANGE_REQUEST_ID"),

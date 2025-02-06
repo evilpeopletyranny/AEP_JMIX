@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-@XmlRootElement(name = "tag")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @JmixEntity
 @Table(name = "TAG", indexes = {

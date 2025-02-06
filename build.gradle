@@ -63,6 +63,7 @@ configurations {
 
 test {
     useJUnitPlatform()
+    systemProperty "schema.output.dir", "src/test/resources/xsd/"
 }
 
 idea {

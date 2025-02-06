@@ -14,9 +14,11 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@XmlRootElement
 @JmixEntity
 @Table(name = "INITIAL_EVENT", indexes = {
         @Index(name = "IDX_INITIAL_EVENT_INITIAL_EVENT_GROUP", columnList = "INITIAL_EVENT_GROUP_ID")

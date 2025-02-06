@@ -15,10 +15,12 @@ import org.springframework.data.annotation.CreatedDate;
 import ru.ase.entity.event.InitialEvent;
 import ru.ase.entity.plug.Requirement;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+@XmlRootElement
 @JmixEntity
 @Table(name = "DOCUMENT", indexes = {
         @Index(name = "IDX_DOCUMENT_DOCUMENT_TYPE", columnList = "DOCUMENT_TYPE_ID"),

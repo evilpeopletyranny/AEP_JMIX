@@ -8,9 +8,11 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
 import java.util.UUID;
 
+@XmlRootElement
 @JmixEntity
 @Table(name = "TAG_TYPE")
 @Entity
