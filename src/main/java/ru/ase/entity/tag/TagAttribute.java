@@ -1,13 +1,13 @@
 package ru.ase.entity.tag;
 
-import io.jmix.core.DeletePolicy;
 import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.entity.annotation.OnDelete;
-import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,22 +18,13 @@ import java.util.UUID;
 
 @XmlRootElement
 @JmixEntity
-@Table(name = "TAG_ATTRIBUTE", indexes = {
-        @Index(name = "IDX_TAG_ATTRIBUTE_TAG_GROUP", columnList = "TAG_GROUP_ID")
-})
+@Table(name = "TAG_ATTRIBUTE")
 @Entity
 public class TagAttribute {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
-
-    @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "TAG_GROUP_ID", nullable = false)
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private TagAttribute tagGroup;
 
     @Column(name = "ATTRIBUTE", nullable = false)
     @NotNull
@@ -54,14 +45,6 @@ public class TagAttribute {
     @CreatedDate
     @Column(name = "CREATED_DATE")
     private OffsetDateTime createdDate;
-
-    public TagAttribute getTagGroup() {
-        return tagGroup;
-    }
-
-    public void setTagGroup(TagAttribute tagGroup) {
-        this.tagGroup = tagGroup;
-    }
 
     public String getAttribute() {
         return attribute;

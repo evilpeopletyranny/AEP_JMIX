@@ -31,8 +31,6 @@ public class EntitiesStream {
                 Tag.class,
                 TagAttribute.class,
                 TagAttributeValue.class,
-                TagGroup.class,
-                TagType.class,
                 Document.class,
                 DocumentType.class,
                 System.class,

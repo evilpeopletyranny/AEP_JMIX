@@ -32,7 +32,6 @@ import java.util.UUID;
         @Index(name = "IDX_TAG_BUILDING", columnList = "BUILDING_ID"),
         @Index(name = "IDX_TAG_SYSTEM", columnList = "SYSTEM_ID"),
         @Index(name = "IDX_TAG_PBS_CODE", columnList = "PBS_CODE_ID"),
-        @Index(name = "IDX_TAG_TAG_TYPE", columnList = "TAG_TYPE_ID")
 })
 @Entity
 public class Tag {
@@ -40,14 +39,6 @@ public class Tag {
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
-
-    @XmlElement(name = "tagType")
-    @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "TAG_TYPE_ID", nullable = false)
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private TagType tagType;
 
     @Comment("Project position kks code.")
     @Column(name = "KKS_CODE", nullable = false)
@@ -126,14 +117,6 @@ public class Tag {
     @DeletedDate
     @Column(name = "DELETED_DATE")
     private OffsetDateTime deletedDate;
-
-    public TagType getTagType() {
-        return tagType;
-    }
-
-    public void setTagType(TagType tagType) {
-        this.tagType = tagType;
-    }
 
     public void setAttributes(Set<TagAttributeValue> attributes) {
         this.attributes = attributes;

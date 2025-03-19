@@ -5,6 +5,7 @@ import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
+import ru.ase.xls.test.Test;
 
 import javax.sql.DataSource;
 
@@ -24,9 +26,9 @@ import javax.sql.DataSource;
 @PWA(name = "AEP_JMIX", shortName = "AEP_JMIX")
 @SpringBootApplication
 public class AEPJMIXApplication implements AppShellConfigurator {
-
     @Autowired
     private Environment environment;
+
 
     public static void main(String[] args) {
         SpringApplication.run(AEPJMIXApplication.class, args);
