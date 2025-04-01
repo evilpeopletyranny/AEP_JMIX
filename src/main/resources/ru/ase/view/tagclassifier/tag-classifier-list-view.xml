@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://tagClassifierListView.title"
+      focusComponent="tagClassifiersDataGrid">
+    <data>
+        <collection id="tagClassifiersDc"
+                    class="ru.ase.entity.tag.classifier.TagClassifier">
+            <fetchPlan extends="_base">
+                <property name="parentClassifier" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="tagClassifiersDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from TagClassifier e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+        <action id="action" type="list_add"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="tagClassifiersDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createButton" action="tagClassifiersDataGrid.create"/>
+            <button id="editButton" action="tagClassifiersDataGrid.edit"/>
+            <button id="removeButton" action="tagClassifiersDataGrid.remove"/>
+            <fileStorageUploadField id="importFromFileButton"
+                                    uploadIcon="UPLOAD"
+                                    uploadDialogTitle="msg://importFromFileButton.uploadText"
+                                    fileStoragePutMode="MANUAL"/>
+            <simplePagination id="pagination" dataLoader="tagClassifiersDl"/>
+        </hbox>
+        <dataGrid id="tagClassifiersDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="tagClassifiersDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="name"/>
+                <column property="parentClassifier"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectButton" action="selectAction"/>
+            <button id="discardButton" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

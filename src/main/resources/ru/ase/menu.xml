@@ -3,6 +3,7 @@
 
     <menu id="application" title="msg://ru.ase/menu.application.title" opened="true">
         <item view="User.list" title="msg://ru.ase.view.user/UserListView.title"/>
+        <item view="TagClassifier.list" title="msg://ru.ase.view.tagclassifier/tagClassifierListView.title"/>
     </menu>
 
 </menu-config>

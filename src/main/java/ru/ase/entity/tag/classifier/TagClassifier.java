@@ -12,7 +12,8 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "TAG_CLASSIFIER", indexes = {
-        @Index(name = "IDX_TAG_CLASSIFIER_PARENT_CLASSIFIER", columnList = "PARENT_CLASSIFIER_ID")
+        @Index(name = "IDX_TAG_CLASSIFIER_PARENT_CLASSIFIER", columnList = "PARENT_CLASSIFIER_ID"),
+        @Index(name = "IDX_TAG_CLASSIFIER_UNQ", columnList = "NAME", unique = true)
 })
 @Entity
 public class TagClassifier {
@@ -33,12 +34,6 @@ public class TagClassifier {
     private String name;
 
     public TagClassifier() {
-    }
-
-    public TagClassifier(UUID id, TagClassifier parentClassifier, String name) {
-        this.id = id;
-        this.parentClassifier = parentClassifier;
-        this.name = name;
     }
 
     public TagClassifier getParentClassifier() {
