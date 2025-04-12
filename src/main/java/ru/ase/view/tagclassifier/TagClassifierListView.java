@@ -8,10 +8,12 @@ import io.jmix.flowui.kit.component.upload.event.FileUploadSucceededEvent;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.upload.TemporaryStorage;
 import io.jmix.flowui.view.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.ase.entity.tag.classifier.TagClassifier;
 import ru.ase.view.main.MainView;
-import ru.ase.xls.TagClassifierXlsxImportService;
+import ru.ase.xls.tag.classifier.TagClassifierXlsxImportService;
 
 import java.io.File;
 import java.util.Objects;
@@ -53,5 +55,4 @@ public class TagClassifierListView extends StandardListView<TagClassifier> {
             temporaryStorage.deleteFile(fileId);
         }
     }
-
 }

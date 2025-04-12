@@ -13,7 +13,7 @@ public class TagClassifierFactory {
         this.dataManager = dataManager;
     }
 
-    public TagClassifier createTagClassifier(String name, TagClassifier parent) {
+    public TagClassifier create(String name, TagClassifier parent) {
         TagClassifier tagClassifier = dataManager.create(TagClassifier.class);
         tagClassifier.setId(UUID.randomUUID());
         tagClassifier.setName(name);

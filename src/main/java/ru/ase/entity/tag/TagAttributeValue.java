@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import ru.ase.entity.tag.attibute.TagAttribute;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.OffsetDateTime;

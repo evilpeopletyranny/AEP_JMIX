@@ -1,4 +1,4 @@
-package ru.ase.xls;
+package ru.ase.xls.tag.classifier;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Component;
 import ru.ase.entity.tag.classifier.TagClassifier;
 import ru.ase.entity.tag.classifier.TagClassifierFactory;
+import ru.ase.xls.utils.XLSParseUtils;
 
 import java.util.*;
 
@@ -30,21 +31,6 @@ public class TagClassifierXlsxParser {
         this.tagClassifierFactory = tagClassifierFactory;
     }
 
-    /**
-     * Reads the header row from the given cell iterator and returns a mapping of header names
-     * to their corresponding column indexes.
-     *
-     * @param cellIterator the iterator over header cells.
-     * @return a map where keys are trimmed header names and values are the corresponding column indexes.
-     */
-    private Map<String, Integer> readHeaders(Iterator<Cell> cellIterator) {
-        Map<String, Integer> headerMap = new HashMap<>();
-        while (cellIterator.hasNext()) {
-            var cell = cellIterator.next();
-            headerMap.put(cell.getStringCellValue().trim(), cell.getColumnIndex());
-        }
-        return headerMap;
-    }
 
     /**
      * Reads and validates the header row from the given cell iterator.
@@ -58,7 +44,7 @@ public class TagClassifierXlsxParser {
     private Map<String, Integer> readAndValidateHeaders(Iterator<Cell> cellIterator,
                                                         String nameColumnTitle,
                                                         String parentColumnTitle) {
-        Map<String, Integer> headerMap = readHeaders(cellIterator);
+        Map<String, Integer> headerMap = XLSParseUtils.readHeaders(cellIterator);
         validateRequiredHeaders(headerMap, nameColumnTitle, parentColumnTitle);
         return headerMap;
     }
@@ -110,8 +96,8 @@ public class TagClassifierXlsxParser {
     /**
      * Processes the data rows from the given row iterator to build a hierarchy of TagClassifier entities.
      *
-     * @param rowIterator the iterator over the data rows.
-     * @param nameColInd  the column index for the classifier name.
+     * @param rowIterator  the iterator over the data rows.
+     * @param nameColInd   the column index for the classifier name.
      * @param parentColInd the column index for the parent classifier name.
      * @return a collection of TagClassifier entities built from the sheet data.
      */
@@ -123,14 +109,14 @@ public class TagClassifierXlsxParser {
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
 
-            String name = getCellValue(row.getCell(nameColInd, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String name = XLSParseUtils.getStringCellValue(row, nameColInd);
 
             if (name.isEmpty()) continue;
 
-            String parentName = getCellValue(row.getCell(parentColInd, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String parentName = XLSParseUtils.getStringCellValue(row, parentColInd);
 
             if (!classifierMap.containsKey(name))
-                classifierMap.put(name, tagClassifierFactory.createTagClassifier(name, classifierMap.get(parentName)));
+                classifierMap.put(name, tagClassifierFactory.create(name, classifierMap.get(parentName)));
         }
         return classifierMap.values();
     }
@@ -148,7 +134,6 @@ public class TagClassifierXlsxParser {
     }
 
 
-
     /**
      * Retrieves the string value from the given cell, trimmed of whitespace.
      *
@@ -158,6 +143,8 @@ public class TagClassifierXlsxParser {
     private String getCellValue(Cell cell) {
         return cell.getStringCellValue().trim();
     }
+
+
 
     /**
      * Calculates the hierarchy level of the given TagClassifier.

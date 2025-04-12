@@ -13,7 +13,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import ru.ase.entity.plug.Limitation;
 import ru.ase.entity.tag.Tag;
-import ru.ase.entity.tag.TagAttribute;
+import ru.ase.entity.tag.attibute.TagAttribute;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

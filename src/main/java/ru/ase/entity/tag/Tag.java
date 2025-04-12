@@ -1,10 +1,7 @@
 package ru.ase.entity.tag;
 
 import io.jmix.core.DeletePolicy;
-import io.jmix.core.annotation.DeletedBy;
-import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.entity.annotation.OnDelete;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Comment;
 import io.jmix.core.metamodel.annotation.Composition;
@@ -12,16 +9,14 @@ import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
 import ru.ase.entity.DesignCondition;
 import ru.ase.entity.event.InitialEvent;
 import ru.ase.entity.structure.PBSCode;
-import ru.ase.entity.structure.unit.Building;
+import ru.ase.entity.structure.unit.building.Building;
 import ru.ase.entity.structure.unit.System;
+import ru.ase.entity.tag.classifier.TagClassifier;
 
 import javax.xml.bind.annotation.*;
-import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,6 +27,7 @@ import java.util.UUID;
         @Index(name = "IDX_TAG_BUILDING", columnList = "BUILDING_ID"),
         @Index(name = "IDX_TAG_SYSTEM", columnList = "SYSTEM_ID"),
         @Index(name = "IDX_TAG_PBS_CODE", columnList = "PBS_CODE_ID"),
+        @Index(name = "IDX_TAG_CLASSIFIER", columnList = "CLASSIFIER_ID")
 })
 @Entity
 public class Tag {
@@ -45,10 +41,22 @@ public class Tag {
     @NotNull
     private String kksCode;
 
+    @Column(name = "NAME", nullable = false)
+    @NotNull
+    private String name;
+
+    @NotNull
+    @Column(name = "DESCRIPTION_ENG", nullable = false)
+    private String descriptionEn;
+
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @JoinColumn(name = "CLASSIFIER_ID", nullable = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private TagClassifier classifier;
+
     @XmlElementWrapper(name = "designConditions")
     @XmlElement(name = "designCondition")
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.UNLINK)
     @JoinTable(name = "TAG_DESIGN_CONDITION_LINK",
             joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "DESIGN_CONDITION_ID", referencedColumnName = "ID"))
@@ -58,7 +66,6 @@ public class Tag {
     @XmlElementWrapper(name = "initialEvents")
     @XmlElement(name = "initialEvent")
     @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.UNLINK)
     @JoinTable(name = "TAG_INITIAL_EVENT_LINK",
             joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "INITIAL_EVENT_ID", referencedColumnName = "ID"))
@@ -73,20 +80,17 @@ public class Tag {
 
     @NotNull
     @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "BUILDING_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Building building;
 
     @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "SYSTEM_ID", nullable = false)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private System system;
 
     @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "PBS_CODE_ID", nullable = false)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -94,29 +98,66 @@ public class Tag {
 
     @Composition
     @OnDeleteInverse(DeletePolicy.DENY)
-    @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "tag")
     private Set<TagAttributeValue> attributes;
 
-    @Column(name = "REVISION", nullable = false)
-    @NotNull
+    @Column(name = "REVISION")
     private String revision;
 
-    @CreatedBy
-    @Column(name = "CREATED_BY")
-    private String createdBy;
+    public String getDescriptionEn() {
+        return descriptionEn;
+    }
 
-    @CreatedDate
-    @Column(name = "CREATED_DATE")
-    private OffsetDateTime createdDate;
+    public Tag() {
+    }
 
-    @DeletedBy
-    @Column(name = "DELETED_BY")
-    private String deletedBy;
+    public Tag(UUID id, String kksCode, String nameRu, String nameEng, TagClassifier classifier, Set<DesignCondition> designConditions, Set<InitialEvent> initialEvents, String description, Building building, System system, PBSCode pbsCode, Set<TagAttributeValue> attributes, String revision) {
+        this.id = id;
+        this.kksCode = kksCode;
+        this.name = nameRu;
+        this.descriptionEn = nameEng;
+        this.classifier = classifier;
+        this.designConditions = designConditions;
+        this.initialEvents = initialEvents;
+        this.description = description;
+        this.building = building;
+        this.system = system;
+        this.pbsCode = pbsCode;
+        this.attributes = attributes;
+        this.revision = revision;
+    }
 
-    @DeletedDate
-    @Column(name = "DELETED_DATE")
-    private OffsetDateTime deletedDate;
+    public void setNameRu(String nameRu) {
+        this.name = nameRu;
+    }
+
+    public String getNameEng() {
+        return descriptionEn;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.descriptionEn = nameEng;
+    }
+
+    public String getNameRu() {
+        return name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public TagClassifier getClassifier() {
+        return classifier;
+    }
+
+    public void setClassifier(TagClassifier classifier) {
+        this.classifier = classifier;
+    }
 
     public void setAttributes(Set<TagAttributeValue> attributes) {
         this.attributes = attributes;
@@ -191,43 +232,30 @@ public class Tag {
         this.kksCode = kksCode;
     }
 
-    public OffsetDateTime getDeletedDate() {
-        return deletedDate;
-    }
-
-    public void setDeletedDate(OffsetDateTime deletedDate) {
-        this.deletedDate = deletedDate;
-    }
-
-    public String getDeletedBy() {
-        return deletedBy;
-    }
-
-    public void setDeletedBy(String deletedBy) {
-        this.deletedBy = deletedBy;
-    }
-
-    public OffsetDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(OffsetDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public UUID getId() {
         return id;
     }
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", kksCode='" + kksCode + '\'' +
+                ", nameRu='" + name + '\'' +
+                ", nameEng='" + descriptionEn + '\'' +
+                ", classifier=" + classifier +
+                ", designConditions=" + designConditions +
+                ", initialEvents=" + initialEvents +
+                ", description='" + description + '\'' +
+                ", building=" + building +
+                ", system=" + system +
+                ", pbsCode=" + pbsCode +
+                ", attributes=" + attributes +
+                ", revision='" + revision + '\'' +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package ru.ase.xls;
+package ru.ase.xls.tag.classifier;
 
 import io.jmix.core.DataManager;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

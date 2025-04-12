@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.ase.entity.tag.classifier.TagClassifier;
 import ru.ase.entity.tag.classifier.TagClassifierFactory;
+import ru.ase.xls.tag.classifier.TagClassifierXlsxParser;
 
 import java.util.*;
 
@@ -38,7 +39,7 @@ class TagClassifierXlsxParserUnitTest {
     @BeforeEach
     void setUp() {
         tagClassifierFactory = mock(TagClassifierFactory.class);
-        when(tagClassifierFactory.createTagClassifier(anyString(), any())).thenAnswer(invocation -> {
+        when(tagClassifierFactory.create(anyString(), any())).thenAnswer(invocation -> {
             String name = invocation.getArgument(0);
             TagClassifier parent = invocation.getArgument(1);
             TagClassifier tc = new TagClassifier();
@@ -132,7 +133,7 @@ class TagClassifierXlsxParserUnitTest {
         assertEquals(3, classifiers.size(), "There should be 3 classifiers created");
 
         // Verify that the TagClassifierFactory's createTagClassifier method was called exactly 3 times.
-        verify(tagClassifierFactory, times(3)).createTagClassifier(anyString(), any());
+        verify(tagClassifierFactory, times(3)).create(anyString(), any());
     }
 
     /**

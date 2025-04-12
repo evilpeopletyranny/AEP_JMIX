@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="AEP_JMIX">
+        <addColumn tableName="TAG">
+            <column name="DESCRIPTION_ENG" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="DESCRIPTION_ENG" defaultNullValue="''" tableName="TAG"/>
+    </changeSet>
+    <changeSet id="2" author="AEP_JMIX">
+        <addColumn tableName="TAG">
+            <column name="NAME" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="NAME" defaultNullValue="''" tableName="TAG"/>
+    </changeSet>
+    <changeSet id="3" author="AEP_JMIX">
+        <dropColumn columnName="created_by" tableName="building"/>
+
+        <dropColumn columnName="created_date" tableName="building"/>
+
+        <dropColumn columnName="deleted_by" tableName="building"/>
+
+        <dropColumn columnName="deleted_date" tableName="building"/>
+    </changeSet>
+    <changeSet id="4" author="AEP_JMIX">
+        <dropColumn columnName="created_by" tableName="pbs_code"/>
+
+        <dropColumn columnName="created_date" tableName="pbs_code"/>
+
+        <dropColumn columnName="deleted_by" tableName="pbs_code"/>
+
+        <dropColumn columnName="deleted_date" tableName="pbs_code"/>
+    </changeSet>
+    <changeSet id="5" author="AEP_JMIX">
+        <dropColumn columnName="created_by" tableName="system_"/>
+
+        <dropColumn columnName="created_date" tableName="system_"/>
+
+        <dropColumn columnName="deleted_by" tableName="system_"/>
+
+        <dropColumn columnName="deleted_date" tableName="system_"/>
+    </changeSet>
+</databaseChangeLog>

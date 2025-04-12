@@ -17,8 +17,9 @@ import ru.ase.entity.plug.File;
 import ru.ase.entity.plug.Limitation;
 import ru.ase.entity.plug.Requirement;
 import ru.ase.entity.structure.PBSCode;
-import ru.ase.entity.structure.unit.Building;
+import ru.ase.entity.structure.unit.building.Building;
 import ru.ase.entity.tag.*;
+import ru.ase.entity.tag.attibute.TagAttribute;
 import ru.ase.entity.task.Task;
 
 import java.util.stream.Stream;

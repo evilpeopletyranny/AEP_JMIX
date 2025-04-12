@@ -36,6 +36,12 @@ public class TagClassifier {
     public TagClassifier() {
     }
 
+    public TagClassifier(UUID id, TagClassifier parentClassifier, String name) {
+        this.id = id;
+        this.parentClassifier = parentClassifier;
+        this.name = name;
+    }
+
     public TagClassifier getParentClassifier() {
         return parentClassifier;
     }

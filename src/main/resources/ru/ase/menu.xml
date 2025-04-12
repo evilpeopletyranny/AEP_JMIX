@@ -4,6 +4,8 @@
     <menu id="application" title="msg://ru.ase/menu.application.title" opened="true">
         <item view="User.list" title="msg://ru.ase.view.user/UserListView.title"/>
         <item view="TagClassifier.list" title="msg://ru.ase.view.tagclassifier/tagClassifierListView.title"/>
+        <item view="PBSCode.list" title="msg://ru.ase.view.pbscode/PBSCodeListView.title"/>
+        <item view="Building.list" title="msg://ru.ase.view.building/buildingListView.title"/>
     </menu>
 
 </menu-config>

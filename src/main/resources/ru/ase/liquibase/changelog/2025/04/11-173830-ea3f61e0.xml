@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="AEP_JMIX">
+        <createTable tableName="ABD_IMPACT_ANALYSIS">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ABD_IMPACT_ANALYSIS"/>
+            </column>
+            <column name="CODE" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="CLOB"/>
+            <column name="CHANGE_CONFIGURATION_BASELINE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMPLEMENTATION_CONFIGURATION_BASELINE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMPLEMENTATION_OBJECT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="LAST_MODIFIED_BY" type="VARCHAR(255)"/>
+            <column name="LAST_MODIFIED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="IMPACT_ANALYSIS_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NON_IMPLEMENTATION_JUSTIFICATION" type="VARCHAR(255)"/>
+            <column name="APPROXIMATION_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CRITICALITY_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="AEP_JMIX">
+        <createTable tableName="APPROXIMATION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APPROXIMATION"/>
+            </column>
+            <column name="CODE" type="VARCHAR(255)"/>
+            <column name="JUSTIFICATION" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LIMITATION_ID" type="UUID"/>
+            <column name="FILE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVISION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TAG_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TAG_ATTRIBUTE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CALC_VALUE" type="DECIMAL(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="AEP_JMIX">
+        <createTable remarks="Description of the structure block - building." tableName="BUILDING">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_BUILDING"/>
+            </column>
+            <column name="KKS_CODE" remarks="KKS code of this structural unit." type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PBS_CODE_ID" remarks="PBS code of this structural unit." type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" remarks="Description of this structural unit." type="CLOB"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="AEP_JMIX">
+        <createTable tableName="CHANGE_REQUEST">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHANGE_REQUEST"/>
+            </column>
+            <column name="TEXT" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="IMPACT_ANALYSIS_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="AEP_JMIX">
+        <createTable tableName="CRITICALITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CRITICALITY"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="AEP_JMIX">
+        <createTable tableName="DESIGN_CONDITION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DESIGN_CONDITION"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="7" author="AEP_JMIX">
+        <createTable tableName="DOCUMENT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DOCUMENT"/>
+            </column>
+            <column name="CODE" remarks="Document code." type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="REVISION" remarks="Document revision." type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOCUMENT_TYPE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REQUIREMENTS_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="8" author="AEP_JMIX">
+        <createTable tableName="DOCUMENT_INITIAL_EVENT_LINK">
+            <column name="DOCUMENT_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DOCUMENT_INITIAL_EVENT_LINK"/>
+            </column>
+            <column name="INITIAL_EVENT_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DOCUMENT_INITIAL_EVENT_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="9" author="AEP_JMIX">
+        <createTable tableName="DOCUMENT_TYPE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DOCUMENT_TYPE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="10" author="AEP_JMIX">
+        <createTable tableName="FILE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="11" author="AEP_JMIX">
+        <createTable tableName="IMPACT_ANALYSIS">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_IMPACT_ANALYSIS"/>
+            </column>
+            <column name="CODE" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="CLOB"/>
+            <column name="CHANGE_CONFIGURATION_BASELINE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMPLEMENTATION_CONFIGURATION_BASELINE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMPLEMENTATION_OBJECT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="LAST_MODIFIED_BY" type="VARCHAR(255)"/>
+            <column name="LAST_MODIFIED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="CHANGE_REQUEST_ID" type="UUID"/>
+            <column name="DOCUMENT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVISION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="12" author="AEP_JMIX">
+        <createTable tableName="INITIAL_EVENT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INITIAL_EVENT"/>
+            </column>
+            <column name="CODE" remarks="Initial event code." type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" remarks="Initial event description." type="CLOB"/>
+            <column name="INITIAL_EVENT_GROUP_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13" author="AEP_JMIX">
+        <createTable tableName="INITIAL_EVENT_GROUP">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INITIAL_EVENT_GROUP"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="14" author="AEP_JMIX">
+        <createTable tableName="LIMITATION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LIMITATION"/>
+            </column>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="15" author="AEP_JMIX">
+        <createTable tableName="PBS_CODE">
+            <column name="ID" remarks="PBS code database identifier." type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PBS_CODE"/>
+            </column>
+            <column name="CODE" remarks="PBS code value." type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" remarks="PBS code description. What object does the PBS code belong to ?"
+                    type="CLOB"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="16" author="AEP_JMIX">
+        <createTable tableName="REPORT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REPORT"/>
+            </column>
+            <column name="CODE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="CLOB"/>
+            <column name="AUTHOR" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NEXT_REPORT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PREV_REPORT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVISION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="LAST_MODIFIED_BY" type="VARCHAR(255)"/>
+            <column name="LAST_MODIFIED_DATE" type="${offsetDateTime.type}"/>
+            <column name="FILE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="17" author="AEP_JMIX">
+        <createTable tableName="REQUIREMENT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REQUIREMENT"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="18" author="AEP_JMIX">
+        <createTable tableName="STAGE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_STAGE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="19" author="AEP_JMIX">
+        <createTable tableName="STATUS">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_STATUS"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20" author="AEP_JMIX">
+        <createTable remarks="Description of the structure block - system." tableName="SYSTEM_">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYSTEM_"/>
+            </column>
+            <column name="KKS_CODE" remarks="KKS code of this structural unit." type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PBS_CODE_ID" remarks="PBS code of this structural unit." type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" remarks="Description of this structural unit." type="CLOB"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="21" author="AEP_JMIX">
+        <createTable tableName="TAG">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG"/>
+            </column>
+            <column name="KKS_CODE" remarks="Project position kks code." type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" remarks="Description of the project position." type="CLOB"/>
+            <column name="BUILDING_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SYSTEM_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PBS_CODE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVISION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="22" author="AEP_JMIX">
+        <createTable tableName="TAG_ATTRIBUTE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_ATTRIBUTE"/>
+            </column>
+            <column name="ATTRIBUTE_GROUP_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="23" author="AEP_JMIX">
+        <createTable tableName="TAG_ATTRIBUTE_GROUP">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_ATTRIBUTE_GROUP"/>
+            </column>
+            <column name="PARENT_GROUP_ID" type="UUID"/>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="24" author="AEP_JMIX">
+        <createTable tableName="TAG_ATTRIBUTE_VALUE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_ATTRIBUTE_VALUE"/>
+            </column>
+            <column name="TAG_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ATTRIBUTE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="25" author="AEP_JMIX">
+        <createTable tableName="TAG_CLASSIFIER">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_CLASSIFIER"/>
+            </column>
+            <column name="PARENT_CLASSIFIER_ID" type="UUID"/>
+            <column name="NAME" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="26" author="AEP_JMIX">
+        <createTable tableName="TAG_DESIGN_CONDITION_LINK">
+            <column name="DESIGN_CONDITION_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_DESIGN_CONDITION_LINK"/>
+            </column>
+            <column name="TAG_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_DESIGN_CONDITION_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="27" author="AEP_JMIX">
+        <createTable tableName="TAG_INITIAL_EVENT_LINK">
+            <column name="INITIAL_EVENT_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_INITIAL_EVENT_LINK"/>
+            </column>
+            <column name="TAG_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAG_INITIAL_EVENT_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="28" author="AEP_JMIX">
+        <createTable tableName="TASK">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK"/>
+            </column>
+            <column name="CODE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ANNOTATION" type="CLOB"/>
+            <column name="REVISION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STAGE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INITIAL_EVENT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="29" author="AEP_JMIX">
+        <createTable tableName="TASK_APPROXIMATION_LINK">
+            <column name="APPROXIMATION_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK_APPROXIMATION_LINK"/>
+            </column>
+            <column name="TASK_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK_APPROXIMATION_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="30" author="AEP_JMIX">
+        <createTable tableName="TASK_DOCUMENT_LINK">
+            <column name="DOCUMENT_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK_DOCUMENT_LINK"/>
+            </column>
+            <column name="TASK_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK_DOCUMENT_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="31" author="AEP_JMIX">
+        <createTable tableName="TASK_REPORT_LINK">
+            <column name="REPORT_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK_REPORT_LINK"/>
+            </column>
+            <column name="TASK_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK_REPORT_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="32" author="AEP_JMIX">
+        <createIndex indexName="IDX_ABD_IMPACT_ANALYSIS_APPROXIMATION" tableName="ABD_IMPACT_ANALYSIS">
+            <column name="APPROXIMATION_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="APPROXIMATION_ID" baseTableName="ABD_IMPACT_ANALYSIS"
+                                 constraintName="FK_ABD_IMPACT_ANALYSIS_ON_APPROXIMATION" referencedColumnNames="ID"
+                                 referencedTableName="APPROXIMATION"/>
+    </changeSet>
+    <changeSet id="33" author="AEP_JMIX">
+        <createIndex indexName="IDX_ABD_IMPACT_ANALYSIS_CRITICALITY" tableName="ABD_IMPACT_ANALYSIS">
+            <column name="CRITICALITY_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="CRITICALITY_ID" baseTableName="ABD_IMPACT_ANALYSIS"
+                                 constraintName="FK_ABD_IMPACT_ANALYSIS_ON_CRITICALITY" referencedColumnNames="ID"
+                                 referencedTableName="CRITICALITY"/>
+    </changeSet>
+    <changeSet id="34" author="AEP_JMIX">
+        <createIndex indexName="IDX_ABD_IMPACT_ANALYSIS_IMPACT_ANALYSIS" tableName="ABD_IMPACT_ANALYSIS">
+            <column name="IMPACT_ANALYSIS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="IMPACT_ANALYSIS_ID" baseTableName="ABD_IMPACT_ANALYSIS"
+                                 constraintName="FK_ABD_IMPACT_ANALYSIS_ON_IMPACT_ANALYSIS" referencedColumnNames="ID"
+                                 referencedTableName="IMPACT_ANALYSIS"/>
+    </changeSet>
+    <changeSet id="35" author="AEP_JMIX">
+        <createIndex indexName="IDX_APPROXIMATION_LIMITATION" tableName="APPROXIMATION">
+            <column name="LIMITATION_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="LIMITATION_ID" baseTableName="APPROXIMATION"
+                                 constraintName="FK_APPROXIMATION_ON_LIMITATION" referencedColumnNames="ID"
+                                 referencedTableName="LIMITATION"/>
+    </changeSet>
+    <changeSet id="36" author="AEP_JMIX">
+        <createIndex indexName="IDX_APPROXIMATION_TAG" tableName="APPROXIMATION">
+            <column name="TAG_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="TAG_ID" baseTableName="APPROXIMATION"
+                                 constraintName="FK_APPROXIMATION_ON_TAG" referencedColumnNames="ID"
+                                 referencedTableName="TAG"/>
+    </changeSet>
+    <changeSet id="37" author="AEP_JMIX">
+        <createIndex indexName="IDX_APPROXIMATION_TAG_ATTRIBUTE" tableName="APPROXIMATION">
+            <column name="TAG_ATTRIBUTE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="TAG_ATTRIBUTE_ID" baseTableName="APPROXIMATION"
+                                 constraintName="FK_APPROXIMATION_ON_TAG_ATTRIBUTE" referencedColumnNames="ID"
+                                 referencedTableName="TAG_ATTRIBUTE"/>
+    </changeSet>
+    <changeSet id="38" author="AEP_JMIX">
+        <createIndex indexName="IDX_CHANGE_REQUEST_IMPACT_ANALYSIS" tableName="CHANGE_REQUEST">
+            <column name="IMPACT_ANALYSIS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="IMPACT_ANALYSIS_ID" baseTableName="CHANGE_REQUEST"
+                                 constraintName="FK_CHANGE_REQUEST_ON_IMPACT_ANALYSIS" referencedColumnNames="ID"
+                                 referencedTableName="IMPACT_ANALYSIS"/>
+    </changeSet>
+    <changeSet id="39" author="AEP_JMIX">
+        <createIndex indexName="IDX_DOCUMENT_DOCUMENT_TYPE" tableName="DOCUMENT">
+            <column name="DOCUMENT_TYPE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="DOCUMENT_TYPE_ID" baseTableName="DOCUMENT"
+                                 constraintName="FK_DOCUMENT_ON_DOCUMENT_TYPE" referencedColumnNames="ID"
+                                 referencedTableName="DOCUMENT_TYPE"/>
+    </changeSet>
+    <changeSet id="40" author="AEP_JMIX">
+        <createIndex indexName="IDX_DOCUMENT_REQUIREMENTS" tableName="DOCUMENT">
+            <column name="REQUIREMENTS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="REQUIREMENTS_ID" baseTableName="DOCUMENT"
+                                 constraintName="FK_DOCUMENT_ON_REQUIREMENTS" referencedColumnNames="ID"
+                                 referencedTableName="REQUIREMENT"/>
+    </changeSet>
+    <changeSet id="41" author="AEP_JMIX">
+        <createIndex indexName="IDX_IMPACT_ANALYSIS_CHANGE_REQUEST" tableName="IMPACT_ANALYSIS">
+            <column name="CHANGE_REQUEST_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="CHANGE_REQUEST_ID" baseTableName="IMPACT_ANALYSIS"
+                                 constraintName="FK_IMPACT_ANALYSIS_ON_CHANGE_REQUEST" referencedColumnNames="ID"
+                                 referencedTableName="CHANGE_REQUEST"/>
+    </changeSet>
+    <changeSet id="42" author="AEP_JMIX">
+        <createIndex indexName="IDX_IMPACT_ANALYSIS_DOCUMENT" tableName="IMPACT_ANALYSIS">
+            <column name="DOCUMENT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="DOCUMENT_ID" baseTableName="IMPACT_ANALYSIS"
+                                 constraintName="FK_IMPACT_ANALYSIS_ON_DOCUMENT" referencedColumnNames="ID"
+                                 referencedTableName="DOCUMENT"/>
+    </changeSet>
+    <changeSet id="43" author="AEP_JMIX">
+        <createIndex indexName="IDX_INITIAL_EVENT_INITIAL_EVENT_GROUP" tableName="INITIAL_EVENT">
+            <column name="INITIAL_EVENT_GROUP_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="INITIAL_EVENT_GROUP_ID" baseTableName="INITIAL_EVENT"
+                                 constraintName="FK_INITIAL_EVENT_ON_INITIAL_EVENT_GROUP" referencedColumnNames="ID"
+                                 referencedTableName="INITIAL_EVENT_GROUP"/>
+    </changeSet>
+    <changeSet id="44" author="AEP_JMIX">
+        <createIndex indexName="IDX_REPORT_FILE" tableName="REPORT">
+            <column name="FILE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="FILE_ID" baseTableName="REPORT" constraintName="FK_REPORT_ON_FILE"
+                                 referencedColumnNames="ID" referencedTableName="FILE"/>
+    </changeSet>
+    <changeSet id="45" author="AEP_JMIX">
+        <createIndex indexName="IDX_REPORT_NEXT_REPORT" tableName="REPORT">
+            <column name="NEXT_REPORT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="NEXT_REPORT_ID" baseTableName="REPORT"
+                                 constraintName="FK_REPORT_ON_NEXT_REPORT" referencedColumnNames="ID"
+                                 referencedTableName="REPORT"/>
+    </changeSet>
+    <changeSet id="46" author="AEP_JMIX">
+        <createIndex indexName="IDX_REPORT_PREV_REPORT" tableName="REPORT">
+            <column name="PREV_REPORT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PREV_REPORT_ID" baseTableName="REPORT"
+                                 constraintName="FK_REPORT_ON_PREV_REPORT" referencedColumnNames="ID"
+                                 referencedTableName="REPORT"/>
+    </changeSet>
+    <changeSet id="47" author="AEP_JMIX">
+        <createIndex indexName="IDX_REPORT_STATUS" tableName="REPORT">
+            <column name="STATUS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="STATUS_ID" baseTableName="REPORT" constraintName="FK_REPORT_ON_STATUS"
+                                 referencedColumnNames="ID" referencedTableName="STATUS"/>
+    </changeSet>
+    <changeSet id="48" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_ATTRIBUTE_ATTRIBUTE_GROUP" tableName="TAG_ATTRIBUTE">
+            <column name="ATTRIBUTE_GROUP_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="ATTRIBUTE_GROUP_ID" baseTableName="TAG_ATTRIBUTE"
+                                 constraintName="FK_TAG_ATTRIBUTE_ON_ATTRIBUTE_GROUP" referencedColumnNames="ID"
+                                 referencedTableName="TAG_ATTRIBUTE_GROUP"/>
+    </changeSet>
+    <changeSet id="49" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_ATTRIBUTE_GROUP_PARENT_GROUP" tableName="TAG_ATTRIBUTE_GROUP">
+            <column name="PARENT_GROUP_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PARENT_GROUP_ID" baseTableName="TAG_ATTRIBUTE_GROUP"
+                                 constraintName="FK_TAG_ATTRIBUTE_GROUP_ON_PARENT_GROUP" referencedColumnNames="ID"
+                                 referencedTableName="TAG_ATTRIBUTE_GROUP"/>
+    </changeSet>
+    <changeSet id="50" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_ATTRIBUTE_GROUP_UNQ" tableName="TAG_ATTRIBUTE_GROUP" unique="true">
+            <column name="NAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="51" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_ATTRIBUTE_VALUE_ATTRIBUTE" tableName="TAG_ATTRIBUTE_VALUE">
+            <column name="ATTRIBUTE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="ATTRIBUTE_ID" baseTableName="TAG_ATTRIBUTE_VALUE"
+                                 constraintName="FK_TAG_ATTRIBUTE_VALUE_ON_ATTRIBUTE" referencedColumnNames="ID"
+                                 referencedTableName="TAG_ATTRIBUTE"/>
+    </changeSet>
+    <changeSet id="52" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_ATTRIBUTE_VALUE_TAG" tableName="TAG_ATTRIBUTE_VALUE">
+            <column name="TAG_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="TAG_ID" baseTableName="TAG_ATTRIBUTE_VALUE"
+                                 constraintName="FK_TAG_ATTRIBUTE_VALUE_ON_TAG" referencedColumnNames="ID"
+                                 referencedTableName="TAG"/>
+    </changeSet>
+    <changeSet id="53" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_BUILDING" tableName="TAG">
+            <column name="BUILDING_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="BUILDING_ID" baseTableName="TAG" constraintName="FK_TAG_ON_BUILDING"
+                                 referencedColumnNames="ID" referencedTableName="BUILDING"/>
+    </changeSet>
+    <changeSet id="54" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_CLASSIFIER_PARENT_CLASSIFIER" tableName="TAG_CLASSIFIER">
+            <column name="PARENT_CLASSIFIER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PARENT_CLASSIFIER_ID" baseTableName="TAG_CLASSIFIER"
+                                 constraintName="FK_TAG_CLASSIFIER_ON_PARENT_CLASSIFIER" onDelete="SET NULL"
+                                 referencedColumnNames="ID" referencedTableName="TAG_CLASSIFIER"/>
+    </changeSet>
+    <changeSet id="55" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_CLASSIFIER_UNQ" tableName="TAG_CLASSIFIER" unique="true">
+            <column name="NAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="56" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_PBS_CODE" tableName="TAG">
+            <column name="PBS_CODE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="57" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_SYSTEM" tableName="TAG">
+            <column name="SYSTEM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SYSTEM_ID" baseTableName="TAG" constraintName="FK_TAG_ON_SYSTEM"
+                                 referencedColumnNames="ID" referencedTableName="SYSTEM_"/>
+    </changeSet>
+    <changeSet id="58" author="AEP_JMIX">
+        <createIndex indexName="IDX_TAG_TAG_ATTRIBUTE_UNQ" tableName="TAG_ATTRIBUTE" unique="true">
+            <column name="NAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="59" author="AEP_JMIX">
+        <createIndex indexName="IDX_TASK_INITIAL_EVENT" tableName="TASK">
+            <column name="INITIAL_EVENT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="INITIAL_EVENT_ID" baseTableName="TASK"
+                                 constraintName="FK_TASK_ON_INITIAL_EVENT" referencedColumnNames="ID"
+                                 referencedTableName="INITIAL_EVENT"/>
+    </changeSet>
+    <changeSet id="60" author="AEP_JMIX">
+        <createIndex indexName="IDX_TASK_STAGE" tableName="TASK">
+            <column name="STAGE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="STAGE_ID" baseTableName="TASK" constraintName="FK_TASK_ON_STAGE"
+                                 referencedColumnNames="ID" referencedTableName="STAGE"/>
+    </changeSet>
+    <changeSet id="61" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="CHANGE_CONFIGURATION_BASELINE_ID" baseTableName="ABD_IMPACT_ANALYSIS"
+                                 constraintName="FK_ABD_IMPACT_ANALYSIS_ON_CHANGE_CONFIGURATION_BASELINE"
+                                 referencedColumnNames="ID" referencedTableName="STAGE"/>
+    </changeSet>
+    <changeSet id="62" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="IMPLEMENTATION_CONFIGURATION_BASELINE_ID"
+                                 baseTableName="ABD_IMPACT_ANALYSIS"
+                                 constraintName="FK_ABD_IMPACT_ANALYSIS_ON_IMPLEMENTATION_CONFIGURATION_BASELINE"
+                                 referencedColumnNames="ID" referencedTableName="STAGE"/>
+    </changeSet>
+    <changeSet id="63" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="IMPLEMENTATION_OBJECT_ID" baseTableName="ABD_IMPACT_ANALYSIS"
+                                 constraintName="FK_ABD_IMPACT_ANALYSIS_ON_IMPLEMENTATION_OBJECT"
+                                 referencedColumnNames="ID" referencedTableName="APPROXIMATION"/>
+    </changeSet>
+    <changeSet id="64" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="STATUS_ID" baseTableName="ABD_IMPACT_ANALYSIS"
+                                 constraintName="FK_ABD_IMPACT_ANALYSIS_ON_STATUS" referencedColumnNames="ID"
+                                 referencedTableName="STATUS"/>
+    </changeSet>
+    <changeSet id="65" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="DOCUMENT_ID" baseTableName="DOCUMENT_INITIAL_EVENT_LINK"
+                                 constraintName="FK_DOCINIEVE_ON_DOCUMENT" referencedColumnNames="ID"
+                                 referencedTableName="DOCUMENT"/>
+    </changeSet>
+    <changeSet id="66" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="INITIAL_EVENT_ID" baseTableName="DOCUMENT_INITIAL_EVENT_LINK"
+                                 constraintName="FK_DOCINIEVE_ON_INITIAL_EVENT" referencedColumnNames="ID"
+                                 referencedTableName="INITIAL_EVENT"/>
+    </changeSet>
+    <changeSet id="67" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="CHANGE_CONFIGURATION_BASELINE_ID" baseTableName="IMPACT_ANALYSIS"
+                                 constraintName="FK_IMPACT_ANALYSIS_ON_CHANGE_CONFIGURATION_BASELINE"
+                                 referencedColumnNames="ID" referencedTableName="STAGE"/>
+    </changeSet>
+    <changeSet id="68" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="IMPLEMENTATION_CONFIGURATION_BASELINE_ID"
+                                 baseTableName="IMPACT_ANALYSIS"
+                                 constraintName="FK_IMPACT_ANALYSIS_ON_IMPLEMENTATION_CONFIGURATION_BASELINE"
+                                 referencedColumnNames="ID" referencedTableName="STAGE"/>
+    </changeSet>
+    <changeSet id="69" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="IMPLEMENTATION_OBJECT_ID" baseTableName="IMPACT_ANALYSIS"
+                                 constraintName="FK_IMPACT_ANALYSIS_ON_IMPLEMENTATION_OBJECT" referencedColumnNames="ID"
+                                 referencedTableName="APPROXIMATION"/>
+    </changeSet>
+    <changeSet id="70" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="STATUS_ID" baseTableName="IMPACT_ANALYSIS"
+                                 constraintName="FK_IMPACT_ANALYSIS_ON_STATUS" referencedColumnNames="ID"
+                                 referencedTableName="STATUS"/>
+    </changeSet>
+    <changeSet id="71" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="DESIGN_CONDITION_ID" baseTableName="TAG_DESIGN_CONDITION_LINK"
+                                 constraintName="FK_TAGDESCON_ON_DESIGN_CONDITION" referencedColumnNames="ID"
+                                 referencedTableName="DESIGN_CONDITION"/>
+    </changeSet>
+    <changeSet id="72" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="TAG_ID" baseTableName="TAG_DESIGN_CONDITION_LINK"
+                                 constraintName="FK_TAGDESCON_ON_TAG" referencedColumnNames="ID"
+                                 referencedTableName="TAG"/>
+    </changeSet>
+    <changeSet id="73" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="INITIAL_EVENT_ID" baseTableName="TAG_INITIAL_EVENT_LINK"
+                                 constraintName="FK_TAGINIEVE_ON_INITIAL_EVENT" referencedColumnNames="ID"
+                                 referencedTableName="INITIAL_EVENT"/>
+    </changeSet>
+    <changeSet id="74" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="TAG_ID" baseTableName="TAG_INITIAL_EVENT_LINK"
+                                 constraintName="FK_TAGINIEVE_ON_TAG" referencedColumnNames="ID"
+                                 referencedTableName="TAG"/>
+    </changeSet>
+    <changeSet id="75" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="APPROXIMATION_ID" baseTableName="TASK_APPROXIMATION_LINK"
+                                 constraintName="FK_TASAPP_ON_APPROXIMATION" referencedColumnNames="ID"
+                                 referencedTableName="APPROXIMATION"/>
+    </changeSet>
+    <changeSet id="76" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="TASK_ID" baseTableName="TASK_APPROXIMATION_LINK"
+                                 constraintName="FK_TASAPP_ON_TASK" referencedColumnNames="ID"
+                                 referencedTableName="TASK"/>
+    </changeSet>
+    <changeSet id="77" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="DOCUMENT_ID" baseTableName="TASK_DOCUMENT_LINK"
+                                 constraintName="FK_TASDOC_ON_DOCUMENT" referencedColumnNames="ID"
+                                 referencedTableName="DOCUMENT"/>
+    </changeSet>
+    <changeSet id="78" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="TASK_ID" baseTableName="TASK_DOCUMENT_LINK"
+                                 constraintName="FK_TASDOC_ON_TASK" referencedColumnNames="ID"
+                                 referencedTableName="TASK"/>
+    </changeSet>
+    <changeSet id="79" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="REPORT_ID" baseTableName="TASK_REPORT_LINK"
+                                 constraintName="FK_TASREP_ON_REPORT" referencedColumnNames="ID"
+                                 referencedTableName="REPORT"/>
+    </changeSet>
+    <changeSet id="80" author="AEP_JMIX">
+        <addForeignKeyConstraint baseColumnNames="TASK_ID" baseTableName="TASK_REPORT_LINK"
+                                 constraintName="FK_TASREP_ON_TASK" referencedColumnNames="ID"
+                                 referencedTableName="TASK"/>
+    </changeSet>
+</databaseChangeLog>

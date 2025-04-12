@@ -1,8 +1,6 @@
 package ru.ase.entity.structure.unit;
 
 import io.jmix.core.DeletePolicy;
-import io.jmix.core.annotation.DeletedBy;
-import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDelete;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
@@ -11,11 +9,8 @@ import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
 import ru.ase.entity.structure.PBSCode;
 
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Comment("General description of the structure unit.")
@@ -46,21 +41,15 @@ public abstract class StructuralUnit {
     @Lob
     private String description;
 
-    @CreatedBy
-    @Column(name = "CREATED_BY")
-    private String createdBy;
+    public StructuralUnit() {
+    }
 
-    @CreatedDate
-    @Column(name = "CREATED_DATE")
-    private OffsetDateTime createdDate;
-
-    @DeletedBy
-    @Column(name = "DELETED_BY")
-    private String deletedBy;
-
-    @DeletedDate
-    @Column(name = "DELETED_DATE")
-    private OffsetDateTime deletedDate;
+    public StructuralUnit(UUID id, String kksCode, PBSCode pbsCode, String description) {
+        this.id = id;
+        this.kksCode = kksCode;
+        this.pbsCode = pbsCode;
+        this.description = description;
+    }
 
     public String getDescription() {
         return description;
@@ -84,38 +73,6 @@ public abstract class StructuralUnit {
 
     public void setKksCode(String kksCode) {
         this.kksCode = kksCode;
-    }
-
-    public OffsetDateTime getDeletedDate() {
-        return deletedDate;
-    }
-
-    public void setDeletedDate(OffsetDateTime deletedDate) {
-        this.deletedDate = deletedDate;
-    }
-
-    public String getDeletedBy() {
-        return deletedBy;
-    }
-
-    public void setDeletedBy(String deletedBy) {
-        this.deletedBy = deletedBy;
-    }
-
-    public OffsetDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(OffsetDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
     }
 
     public UUID getId() {
